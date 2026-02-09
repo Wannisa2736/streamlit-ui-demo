@@ -15,45 +15,6 @@ if "page" not in st.session_state:
     st.session_state.page = "หน้าหลัก"
 
 # -----------------------------
-# SIDEBAR STYLE (RED THEME + ACTIVE)
-# -----------------------------
-st.markdown("""
-<style>
-/* Sidebar background */
-section[data-testid="stSidebar"] {
-    background-color: #fff3f3;
-}
-
-/* Sidebar buttons */
-div.stButton > button {
-    width: 100%;
-    border-radius: 12px;
-    background-color: #f3f4f6;   /* เทาอ่อน แทนขาว */
-    color: #374151;              /* เทาเข้ม อ่านง่าย */
-    border: 1px solid #e5e7eb;
-    margin-bottom: 10px;
-    font-size: 15px;
-    transition: all 0.2s ease;
-}
-
-/* Hover */
-div.stButton > button:hover {
-    background-color: #fee2e2;
-    color: #991b1b;
-    border-color: #fecaca;
-}
-
-/* Active page */
-div.stButton > button.active {
-    background-color: #dc2626 !important;
-    color: white !important;
-    font-weight: 600;
-    border: none;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# -----------------------------
 # SIDEBAR
 # -----------------------------
 with st.sidebar:
@@ -71,24 +32,8 @@ with st.sidebar:
     ]
 
     for m in menu:
-        clicked = st.button(m, use_container_width=True, key=m)
-
-        if clicked:
+        if st.button(m, use_container_width=True):
             st.session_state.page = m
-
-        is_active = st.session_state.page == m
-
-        st.markdown(f"""
-        <script>
-        const buttons = window.parent.document.querySelectorAll('button');
-        buttons.forEach(btn => {{
-            if (btn.innerText === "{m}") {{
-                btn.classList.remove("active");
-                {"btn.classList.add('active');" if is_active else ""}
-            }}
-        }});
-        </script>
-        """, unsafe_allow_html=True)
 
 # -----------------------------
 # PAGE: หน้าหลัก
@@ -170,6 +115,7 @@ elif st.session_state.page == "วิเคราะห์":
 elif st.session_state.page == "รายงาน":
     st.title("📑 รายงาน")
 
+    st.subheader("สรุปผลการวิเคราะห์")
     c1, c2, c3 = st.columns(3)
     c1.metric("จำนวนการวิเคราะห์", "7")
     c2.metric("คะแนนเฉลี่ย", "8.45 / 10")
