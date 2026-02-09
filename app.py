@@ -19,26 +19,31 @@ if "page" not in st.session_state:
 # -----------------------------
 st.markdown("""
 <style>
+/* Sidebar background */
 section[data-testid="stSidebar"] {
-    background-color: #fff5f5;
+    background-color: #fff3f3;
 }
 
+/* Sidebar buttons */
 div.stButton > button {
     width: 100%;
-    border-radius: 8px;
-    background-color: #ffffff;
-    color: #333;
-    border: 1px solid #e5e5e5;
-    margin-bottom: 6px;
+    border-radius: 12px;
+    background-color: #f3f4f6;   /* เทาอ่อน แทนขาว */
+    color: #374151;              /* เทาเข้ม อ่านง่าย */
+    border: 1px solid #e5e7eb;
+    margin-bottom: 10px;
     font-size: 15px;
-    transition: 0.2s ease;
+    transition: all 0.2s ease;
 }
 
+/* Hover */
 div.stButton > button:hover {
     background-color: #fee2e2;
-    color: #b91c1c;
+    color: #991b1b;
+    border-color: #fecaca;
 }
 
+/* Active page */
 div.stButton > button.active {
     background-color: #dc2626 !important;
     color: white !important;
@@ -47,6 +52,7 @@ div.stButton > button.active {
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 # -----------------------------
 # SIDEBAR
