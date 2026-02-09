@@ -1,157 +1,161 @@
 import streamlit as st
-import pandas as pd
 
-# -----------------------------
-# Page Config
-# -----------------------------
+# ------------------ PAGE CONFIG ------------------
 st.set_page_config(
-    page_title="AI Voice Analytics",
-    page_icon="🎧",
-    layout="wide"
+    page_title="Voice Analytics Dashboard",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# -----------------------------
-# Sidebar
-# -----------------------------
-st.sidebar.title("🎧 AI Voice Analytics")
-menu = st.sidebar.radio(
-    "เมนูหลัก",
-    [
-        "Dashboard",
-        "ไฟล์เสียง",
-        "อัดเสียง",
-        "วิเคราะห์",
-        "รายงาน",
-        "Sentiment Analysis",
-        "ตั้งค่า"
-    ]
-)
+# ------------------ GLOBAL STYLE ------------------
+st.markdown("""
+<style>
+/* background */
+.stApp {
+    background: linear-gradient(180deg, #0f1115, #151a21);
+    color: white;
+}
 
-st.sidebar.markdown("---")
-st.sidebar.caption("Week 1 : UX/UI Prototype")
+/* sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #1c2028;
+}
 
-# -----------------------------
-# Dashboard
-# -----------------------------
-if menu == "Dashboard":
-    st.title("📊 Voice Analytics Dashboard")
-    st.caption("ระบบวิเคราะห์คุณภาพการให้บริการ (Prototype)")
+/* sidebar title */
+.sidebar-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
 
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("📁 ไฟล์เสียงทั้งหมด", "12")
-    col2.metric("📈 วิเคราะห์แล้ว", "8")
-    col3.metric("⭐ คะแนนเฉลี่ย", "8.45 / 10")
-    col4.metric("✅ สถานะระบบ", "พร้อมใช้งาน")
+/* card */
+.card {
+    background: #232833;
+    border-radius: 16px;
+    padding: 20px;
+    height: 120px;
+}
 
-    st.markdown("---")
-    st.subheader("ภาพรวมระบบ")
-    st.write(
-        """
-        ระบบนี้เป็นต้นแบบ (Prototype) สำหรับแสดง Flow การใช้งานของระบบ
-        วิเคราะห์เสียงสนทนา Call Center โดยเน้น UX/UI และประสบการณ์ผู้ใช้
-        """
+/* feature card */
+.feature {
+    border-radius: 16px;
+    padding: 20px;
+    height: 170px;
+}
+
+/* footer */
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    color: white;
+    opacity: 0.7;
+    padding: 8px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ------------------ SIDEBAR ------------------
+with st.sidebar:
+    st.markdown("## 🎧 Voice Analytics")
+    menu = st.radio(
+        "เลือกหน้า:",
+        ["หน้าหลัก", "ไฟล์เสียง", "อัดเสียง", "วิเคราะห์", "รายงาน", "Sentiment Analysis", "ตั้งค่า"]
     )
 
-# -----------------------------
-# Audio Files
-# -----------------------------
-elif menu == "ไฟล์เสียง":
-    st.title("📂 จัดการไฟล์เสียง")
+# ------------------ MAIN CONTENT ------------------
+st.markdown("## 🎯 Voice Analytics Dashboard")
+st.markdown("ระบบวิเคราะห์คุณภาพการบริการ Call Center")
 
-    uploaded_files = st.file_uploader(
-        "อัปโหลดไฟล์เสียง (รองรับ WAV, MP3, M4A)",
-        type=["wav", "mp3", "m4a"],
-        accept_multiple_files=True
-    )
+# ------------------ TOP CARDS ------------------
+c1, c2, c3, c4 = st.columns(4)
 
-    if uploaded_files:
-        st.success(f"อัปโหลดไฟล์แล้ว {len(uploaded_files)} ไฟล์")
-        for f in uploaded_files:
-            st.write("•", f.name)
-    else:
-        st.info("ยังไม่มีไฟล์เสียง กรุณาอัปโหลด")
+with c1:
+    st.markdown("""
+    <div class="card">
+        📁 ไฟล์เสียง<br>
+        <h2>0</h2>
+    </div>
+    """, unsafe_allow_html=True)
 
-# -----------------------------
-# Record Audio (Mock)
-# -----------------------------
-elif menu == "อัดเสียง":
-    st.title("🎙️ อัดเสียงสนทนา (Prototype)")
+with c2:
+    st.markdown("""
+    <div class="card">
+        📊 การวิเคราะห์<br>
+        <h2>0</h2>
+    </div>
+    """, unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2)
-    with col1:
-        customer_id = st.text_input("Customer ID", "CUST001")
-        phone = st.text_input("เบอร์โทรศัพท์", "089-123-4567")
+with c3:
+    st.markdown("""
+    <div class="card">
+        ⭐ คะแนนเฉลี่ย<br>
+        <h2>N/A</h2>
+    </div>
+    """, unsafe_allow_html=True)
 
-    with col2:
-        agent_id = st.text_input("Agent ID", "AGENT001")
-        duration = st.slider("ระยะเวลาอัดเสียง (วินาที)", 1, 60, 10)
+with c4:
+    st.markdown("""
+    <div class="card">
+        ✅ สถานะ<br>
+        <h2>พร้อมใช้งาน</h2>
+    </div>
+    """, unsafe_allow_html=True)
 
-    st.subheader("การตั้งค่าเสียง")
-    channel = st.radio("Channel", ["Mono", "Stereo"])
-    sample_rate = st.selectbox("Sample Rate", [16000, 44100])
+st.markdown("---")
 
-    if st.button("🎤 เริ่มอัดเสียง"):
-        st.success("เริ่มอัดเสียง (ตัวอย่าง UI เท่านั้น)")
+# ------------------ FEATURE SECTION ------------------
+st.markdown("### 📋 ฟีเจอร์หลัก")
 
-# -----------------------------
-# Analyze (Mock)
-# -----------------------------
-elif menu == "วิเคราะห์":
-    st.title("📈 วิเคราะห์เสียง")
+f1, f2 = st.columns(2)
+f3, f4 = st.columns(2)
 
-    st.info("หน้านี้แสดงตัวอย่าง Flow การวิเคราะห์ (ยังไม่เชื่อม AI จริง)")
+with f1:
+    st.markdown("""
+    <div class="feature" style="background:#18384a">
+        📂 <b>ไฟล์เสียง</b><br><br>
+        • อัปโหลดไฟล์ WAV<br>
+        • ดูรายการไฟล์ทั้งหมด<br>
+        • เปิดไฟล์เสียง
+    </div>
+    """, unsafe_allow_html=True)
 
-    if st.button("เริ่มวิเคราะห์"):
-        with st.spinner("กำลังวิเคราะห์..."):
-            st.success("วิเคราะห์เสร็จสิ้น")
+with f2:
+    st.markdown("""
+    <div class="feature" style="background:#1e3a2f">
+        🎙️ <b>อัดเสียง</b><br><br>
+        • สร้างไฟล์ทดสอบ<br>
+        • อัดเสียงจริง<br>
+        • บันทึกบทสนทนา
+    </div>
+    """, unsafe_allow_html=True)
 
-        st.metric("UX Score", "8.45")
-        st.metric("Sentiment", "Positive")
+with f3:
+    st.markdown("""
+    <div class="feature" style="background:#1f4d2f">
+        📈 <b>วิเคราะห์</b><br><br>
+        • วิเคราะห์คุณภาพเสียง<br>
+        • ประเมิน Sentiment<br>
+        • คำนวณ UX Score
+    </div>
+    """, unsafe_allow_html=True)
 
-# -----------------------------
-# Report
-# -----------------------------
-elif menu == "รายงาน":
-    st.title("📑 รายงานผลการวิเคราะห์")
+with f4:
+    st.markdown("""
+    <div class="feature" style="background:#4a3b14">
+        📄 <b>รายงาน</b><br><br>
+        • สรุปผลการวิเคราะห์<br>
+        • ส่งออก JSON<br>
+        • ดูข้อมูลเชิงลึก
+    </div>
+    """, unsafe_allow_html=True)
 
-    data = {
-        "ชื่อไฟล์": [
-            "call_20260201.wav",
-            "call_20260202.wav",
-            "call_20260203.wav"
-        ],
-        "UX Score": [8.2, 8.6, 8.5],
-        "Sentiment": ["Positive", "Neutral", "Positive"]
-    }
-
-    df = pd.DataFrame(data)
-    st.table(df)
-
-# -----------------------------
-# Sentiment Analysis
-# -----------------------------
-elif menu == "Sentiment Analysis":
-    st.title("😊 Sentiment Analysis")
-
-    st.subheader("สัดส่วนความคิดเห็น")
-    sentiment_data = pd.DataFrame(
-        {
-            "Sentiment": ["Positive", "Neutral", "Negative"],
-            "Score": [70, 20, 10]
-        }
-    )
-
-    st.bar_chart(sentiment_data.set_index("Sentiment"))
-
-# -----------------------------
-# Settings
-# -----------------------------
-elif menu == "ตั้งค่า":
-    st.title("⚙️ ตั้งค่าระบบ")
-
-    language = st.selectbox("ภาษา", ["ภาษาไทย", "English"])
-    theme = st.selectbox("ธีม", ["Dark Mode", "Light Mode"])
-    notify = st.checkbox("เปิดการแจ้งเตือน", True)
-
-    if st.button("บันทึกการตั้งค่า"):
-        st.success("บันทึกการตั้งค่าเรียบร้อยแล้ว")
+# ------------------ FOOTER ------------------
+st.markdown("""
+<div class="footer">
+🖥️ Voice Analytics Dashboard | Call Center UX Analyzer
+</div>
+""", unsafe_allow_html=True)
