@@ -53,7 +53,6 @@ div.stButton > button.active {
 </style>
 """, unsafe_allow_html=True)
 
-
 # -----------------------------
 # SIDEBAR
 # -----------------------------
