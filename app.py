@@ -15,6 +15,40 @@ if "page" not in st.session_state:
     st.session_state.page = "หน้าหลัก"
 
 # -----------------------------
+# SIDEBAR STYLE (RED THEME + ACTIVE)
+# -----------------------------
+st.markdown("""
+<style>
+section[data-testid="stSidebar"] {
+    background-color: #fff5f5;
+}
+
+div.stButton > button {
+    width: 100%;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #e5e5e5;
+    margin-bottom: 6px;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+
+div.stButton > button:hover {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+div.stButton > button.active {
+    background-color: #dc2626 !important;
+    color: white !important;
+    font-weight: 600;
+    border: none;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# -----------------------------
 # SIDEBAR
 # -----------------------------
 with st.sidebar:
@@ -32,8 +66,24 @@ with st.sidebar:
     ]
 
     for m in menu:
-        if st.button(m, use_container_width=True):
+        clicked = st.button(m, use_container_width=True, key=m)
+
+        if clicked:
             st.session_state.page = m
+
+        is_active = st.session_state.page == m
+
+        st.markdown(f"""
+        <script>
+        const buttons = window.parent.document.querySelectorAll('button');
+        buttons.forEach(btn => {{
+            if (btn.innerText === "{m}") {{
+                btn.classList.remove("active");
+                {"btn.classList.add('active');" if is_active else ""}
+            }}
+        }});
+        </script>
+        """, unsafe_allow_html=True)
 
 # -----------------------------
 # PAGE: หน้าหลัก
@@ -115,7 +165,6 @@ elif st.session_state.page == "วิเคราะห์":
 elif st.session_state.page == "รายงาน":
     st.title("📑 รายงาน")
 
-    st.subheader("สรุปผลการวิเคราะห์")
     c1, c2, c3 = st.columns(3)
     c1.metric("จำนวนการวิเคราะห์", "7")
     c2.metric("คะแนนเฉลี่ย", "8.45 / 10")
