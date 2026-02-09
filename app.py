@@ -1,15 +1,13 @@
 import streamlit as st
-import matplotlib.pyplot as plt
 import numpy as np
 
-# ---------------- CONFIG ----------------
 st.set_page_config(
     page_title="Voice Analytics",
     page_icon="📞",
     layout="wide"
 )
 
-# ---------------- SIDEBAR ----------------
+# ---------- SIDEBAR ----------
 st.sidebar.markdown("## 📞 Voice Analytics")
 page = st.sidebar.radio(
     "เลือกหน้า:",
@@ -24,7 +22,7 @@ page = st.sidebar.radio(
     ]
 )
 
-# ---------------- COMMON STYLE ----------------
+# ---------- COMPONENT ----------
 def card(title, value, icon=""):
     st.markdown(
         f"""
@@ -36,37 +34,20 @@ def card(title, value, icon=""):
         unsafe_allow_html=True
     )
 
-# ---------------- PAGES ----------------
+# ---------- PAGES ----------
 def dashboard_page():
     st.markdown("## 🎯 Voice Analytics Dashboard")
     st.caption("ระบบวิเคราะห์คุณภาพการบริการ Call Center")
 
-    col1, col2, col3, col4 = st.columns(4)
-    with col1: card("ไฟล์เสียง", "0", "📂")
-    with col2: card("การวิเคราะห์", "0", "📊")
-    with col3: card("คะแนนเฉลี่ย", "N/A", "⭐")
-    with col4: card("สถานะ", "พร้อมใช้งาน", "✅")
-
-    st.markdown("### 📋 ฟีเจอร์หลัก")
-    c1, c2 = st.columns(2)
-
-    with c1:
-        st.success("📂 ไฟล์เสียง\n- อัปโหลด WAV\n- ดูรายการไฟล์\n- เปิดไฟล์เสียง")
-
-    with c2:
-        st.info("🎤 อัดเสียง\n- อัดเสียง WAV\n- อัดเสียงสด\n- บันทึกข้อมูลสนทนา")
-
-    c3, c4 = st.columns(2)
-    with c3:
-        st.warning("📊 วิเคราะห์\n- วิเคราะห์คุณภาพเสียง\n- ประเมิน Sentiment\n- คำนวณ UX Score")
-
-    with c4:
-        st.error("📑 รายงาน\n- สรุปผล\n- ส่งออก JSON\n- ข้อมูลเชิงลึก")
+    c1, c2, c3, c4 = st.columns(4)
+    with c1: card("ไฟล์เสียง", "0", "📂")
+    with c2: card("การวิเคราะห์", "0", "📊")
+    with c3: card("คะแนนเฉลี่ย", "N/A", "⭐")
+    with c4: card("สถานะ", "พร้อมใช้งาน", "✅")
 
 def upload_page():
     st.markdown("## 📂 ไฟล์เสียง")
     st.file_uploader("อัปโหลดไฟล์เสียง (WAV)", type=["wav"])
-    st.info("ยังไม่มีไฟล์เสียง")
 
 def record_page():
     st.markdown("## 🎤 อัดเสียง")
@@ -78,7 +59,7 @@ def record_page():
 
 def analysis_page():
     st.markdown("## 📊 วิเคราะห์ไฟล์เสียง")
-    st.info("ยังไม่มีข้อมูลให้วิเคราะห์")
+    st.info("ยังไม่มีข้อมูล")
 
 def report_page():
     st.markdown("## 📑 รายงาน")
@@ -87,23 +68,20 @@ def report_page():
 def sentiment_page():
     st.markdown("## 😊 Sentiment Analysis")
 
-    # mock data
-    labels = ["Positive", "Neutral", "Negative"]
-    values = [60, 25, 15]
+    data = {
+        "Positive": 60,
+        "Neutral": 25,
+        "Negative": 15
+    }
 
-    fig, ax = plt.subplots()
-    ax.bar(labels, values)
-    ax.set_ylabel("เปอร์เซ็นต์")
-    ax.set_title("ผลการวิเคราะห์ Sentiment")
-
-    st.pyplot(fig)
+    st.bar_chart(data)
 
 def setting_page():
     st.markdown("## ⚙️ ตั้งค่า")
     st.checkbox("โหมดมืด")
     st.button("บันทึกการตั้งค่า")
 
-# ---------------- ROUTER ----------------
+# ---------- ROUTER ----------
 if page == "หน้าหลัก":
     dashboard_page()
 elif page == "ไฟล์เสียง":
